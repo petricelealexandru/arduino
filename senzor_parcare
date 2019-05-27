@@ -1,0 +1,169 @@
+
+#include<Wire.h>
+#include<LiquidCrystal_I2C.h>
+
+
+LiquidCrystal_I2C lcd(0x3F, 2, 1, 0, 4, 5, 6, 7, 3,POSITIVE);
+
+
+int senzor1(){
+  digitalWrite(5, LOW);
+  delayMicroseconds(2);
+  digitalWrite(5, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(5, LOW);
+  float distance = pulseIn(4, HIGH);
+  distance= distance/58;
+
+  return(distance);
+}
+
+int senzor2(){
+  digitalWrite(3, LOW);
+  delayMicroseconds(2);
+  digitalWrite(3, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(3, LOW);
+  float distance = pulseIn(2, HIGH);
+  distance= distance/58;
+
+  return(distance);
+  }
+
+
+const int buzzer = 12;
+void setup() {
+  
+  lcd.begin(16, 2);
+   
+ 
+  pinMode(4, INPUT);
+  pinMode(5, OUTPUT);
+  pinMode(2, INPUT);
+  pinMode(3, OUTPUT);
+  pinMode(buzzer, OUTPUT);
+}
+
+void afiseaza_senzor1(){
+  
+   
+  float dist1=senzor1();
+  if (dist1 <10) {
+    lcd.setCursor(0, 0);
+    lcd.write("########");
+    tone(buzzer, 1000);
+  }
+  if (dist1 >10 && dist1<15) {
+    lcd.setCursor(0, 0);
+    lcd.write("####### ");
+   tone(buzzer, 1000);
+  }
+  
+  if (dist1 >15 && dist1<20) {
+    lcd.setCursor(0, 0);
+    lcd.write("######  ");
+    noTone(buzzer); 
+  }
+  if (dist1>20 && dist1<25) {
+    lcd.setCursor(0, 0);
+    lcd.write("#####   ");
+    noTone(buzzer); 
+  }
+
+  if (dist1>25 && dist1<30) {
+    lcd.setCursor(0, 0);
+    lcd.write("####    ");
+    noTone(buzzer);
+  }
+  if (dist1>30 && dist1<35) {
+    lcd.setCursor(0, 0);
+    lcd.write("###     ");
+    noTone(buzzer);
+  }
+
+   if (dist1>35 && dist1<40) {
+    lcd.setCursor(0, 0);
+    lcd.write("##      ");
+    noTone(buzzer);
+  }
+
+   if (dist1>40 && dist1<60) {
+    lcd.setCursor(0, 0);
+    lcd.write("#       ");
+    noTone(buzzer);
+  }
+  }
+
+
+void afiseaza_senzor2(){
+  
+  float dist2=senzor2();
+ 
+  if (dist2 <10) {
+    lcd.setCursor(8, 0);
+    lcd.write("########");
+    tone(buzzer, 1000);
+  }
+  if (dist2 >10 && dist2<15) {
+    lcd.setCursor(8, 0);
+    lcd.write(" #######");
+    tone(buzzer, 1000);
+  }
+  
+  if (dist2 >15 && dist2<20) {
+    lcd.setCursor(8, 0);
+    lcd.write("  ######");
+    noTone(buzzer);
+    
+  }
+  if (dist2>20 && dist2<25) { 
+    lcd.setCursor(8, 0);
+    lcd.write("   #####");
+    noTone(buzzer);
+  }
+
+  if (dist2>25 && dist2<30) {
+    lcd.setCursor(8, 0);
+    lcd.write("    ####");
+    noTone(buzzer);
+  }
+  if (dist2>30 && dist2<35) {
+    lcd.setCursor(8, 0);
+    lcd.write("     ###");
+    noTone(buzzer);
+  }
+
+   if (dist2>35 && dist2<40) {
+    lcd.setCursor(8, 0);
+    lcd.write("      ##");
+    noTone(buzzer);
+  }
+
+   if (dist2>40 && dist2<60) {
+    lcd.setCursor(8, 0);
+    lcd.write("       #");
+    noTone(buzzer);
+  }
+
+  }
+  
+void loop() {
+
+afiseaza_senzor1();
+afiseaza_senzor2(); 
+if(senzor1()>60 && senzor2()>60){
+    lcd.clear();
+    } 
+if(senzor1()>60 && senzor2()<60 ){
+    lcd.setCursor(0, 0);
+     lcd.write("        ");
+  }
+if(senzor1()<60 && senzor2()>60 ){
+    lcd.setCursor(8, 0);
+     lcd.write("        ");
+  }
+
+
+ 
+  delay(100);
+}
